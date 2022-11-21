@@ -5101,7 +5101,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 BSD 2-Clause License
 
-Copyright (c) 2019, Tekartik
+Copyright (c) 2019, Alexandre Roux Tekartik
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
