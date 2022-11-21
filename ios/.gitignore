@@ -8,13 +8,8 @@
 .tags*
 **/.vagrant/
 **/DerivedData/
-Icon?
-**/Pods/
-**/.symlinks/
-xcuserdata
 **/.generated/
 ServiceDefinitions.json
-Runner/GeneratedPluginRegistrant.*
 
 # Exceptions to above rules.
 !default.mode1v3
