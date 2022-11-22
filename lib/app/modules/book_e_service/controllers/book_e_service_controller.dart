@@ -116,10 +116,15 @@ class BookEServiceController extends GetxController {
         final hours2 = int.tryParse(DateFormat('HH').format(_localDateTime2));
         return hours1.compareTo(hours2);
       });
-      nightTimes.assignAll(times.sublist(0, 14));
-      morningTimes.assignAll(times.sublist(14, 24));
-      afternoonTimes.assignAll(times.sublist(24, 36));
-      eveningTimes.assignAll(times.sublist(36));
+      nightTimes.assignAll(times.sublist(0, 7));
+      morningTimes.assignAll(times.sublist(7, 12));
+      afternoonTimes.assignAll(times.sublist(12, 17));
+      eveningTimes.assignAll(times.sublist(17));
+
+      //      nightTimes.assignAll(times.sublist(0, 11));
+      // morningTimes.assignAll(times.sublist(11, 14));
+      // afternoonTimes.assignAll(times.sublist(14, 17));
+      // eveningTimes.assignAll(times.sublist(17, 23));
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }

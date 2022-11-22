@@ -66,26 +66,26 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> verifyPhone() async {
-    try {
-      loading.value = true;
-      await _userRepository.verifyPhone(smsSent.value);
-      await Get.find<FireBaseMessagingService>().setDeviceToken();
-      currentUser.value = await _userRepository.register(currentUser.value);
-      await _userRepository.signUpWithEmailAndPassword(
-          currentUser.value.email, currentUser.value.apiToken);
-      await Get.find<RootController>().changePage(0);
-    } catch (e) {
-      Get.back();
-      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
-    } finally {
-      loading.value = false;
-    }
-  }
+  // Future<void> verifyPhone() async {
+  //   try {
+  //     loading.value = true;
+  //     await _userRepository.verifyPhone(smsSent.value);
+  //     await Get.find<FireBaseMessagingService>().setDeviceToken();
+  //     currentUser.value = await _userRepository.register(currentUser.value);
+  //     await _userRepository.signUpWithEmailAndPassword(
+  //         currentUser.value.email, currentUser.value.apiToken);
+  //     await Get.find<RootController>().changePage(0);
+  //   } catch (e) {
+  //     Get.back();
+  //     Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+  //   } finally {
+  //     loading.value = false;
+  //   }
+  // }
 
-  Future<void> resendOTPCode() async {
-    await _userRepository.sendCodeToPhone();
-  }
+  // Future<void> resendOTPCode() async {
+  //   await _userRepository.sendCodeToPhone();
+  // }
 
   void sendResetLink() async {
     Get.focusScope.unfocus();

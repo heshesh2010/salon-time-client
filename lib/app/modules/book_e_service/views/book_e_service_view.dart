@@ -656,6 +656,7 @@ class BookEServiceView extends GetWidget<BookEServiceController> {
                 onPressed: (controller.booking.value.bookingAt != null &&
                         (controller.booking.value.address != null ||
                             controller.booking.value.canBookingAtSalon) &&
+                        controller.booking.value.employee != null &&
                         Get.isRegistered<TabBarController>(tag: 'hours') &&
                         Get.find<TabBarController>(tag: 'hours').initialized &&
                         Get.find<TabBarController>(tag: 'hours')

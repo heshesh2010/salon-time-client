@@ -11,7 +11,7 @@ import '../middlewares/auth_middleware.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/forgot_password_view.dart';
 import '../modules/auth/views/login_view.dart';
-import '../modules/auth/views/phone_verification_view.dart';
+//import '../modules/auth/views/phone_verification_view.dart';
 import '../modules/auth/views/register_view.dart';
 import '../modules/book_e_service/bindings/book_e_service_binding.dart';
 import '../modules/book_e_service/views/book_e_service_view.dart';
@@ -131,10 +131,10 @@ class Theme1AppPages {
         name: Routes.FORGOT_PASSWORD,
         page: () => ForgotPasswordView(),
         binding: AuthBinding()),
-    GetPage(
-        name: Routes.PHONE_VERIFICATION,
-        page: () => PhoneVerificationView(),
-        binding: AuthBinding()),
+    // GetPage(
+    //     name: Routes.PHONE_VERIFICATION,
+    //     page: () => PhoneVerificationView(),
+    //     binding: AuthBinding()),
     GetPage(
         name: Routes.E_SERVICE,
         page: () => EServiceView(),

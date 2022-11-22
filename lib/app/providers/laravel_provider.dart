@@ -278,7 +278,7 @@ class LaravelApiClient extends GetxService with ApiClient {
   Future<List<Salon>> getNearSalons(LatLng latLng, LatLng areaLatLng) async {
     var _queryParameters = {
       'only':
-          'id;name;has_media;media;total_reviews;rate;salonLevel;address;distance;closed;description',
+          'id;name;has_media;media;total_reviews;rate;salonLevel;address;distance;closed;description;employees',
       'with': 'salonLevel;address;employees',
       'limit': '6',
     };

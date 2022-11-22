@@ -5,7 +5,6 @@ import '../../../../common/helper.dart';
 import '../../../../common/ui.dart';
 import '../../../models/setting_model.dart';
 import '../../../services/settings_service.dart';
-import '../../global_widgets/block_button_widget.dart';
 import '../../global_widgets/circular_loading_widget.dart';
 import '../../global_widgets/text_field_widget.dart';
 import '../controllers/auth_controller.dart';
@@ -117,28 +116,28 @@ class PhoneVerificationView extends GetWidget<AuthController> {
                         onChanged: (input) => controller.smsSent.value = input,
                         // iconData: Icons.add_to_home_screen_outlined,
                       ),
-                      BlockButtonWidget(
-                        onPressed: () async {
-                          await controller.verifyPhone();
-                        },
-                        color: Get.theme.colorScheme.secondary,
-                        text: Text(
-                          "Verify".tr,
-                          style: Get.textTheme.headline6
-                              .merge(TextStyle(color: Get.theme.primaryColor)),
-                        ),
-                      ).paddingSymmetric(vertical: 30, horizontal: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              controller.resendOTPCode();
-                            },
-                            child: Text("Resend the OTP Code Again".tr),
-                          ),
-                        ],
-                      )
+                      // BlockButtonWidget(
+                      //   onPressed: () async {
+                      //     await controller.verifyPhone();
+                      //   },
+                      //   color: Get.theme.colorScheme.secondary,
+                      //   text: Text(
+                      //     "Verify".tr,
+                      //     style: Get.textTheme.headline6
+                      //         .merge(TextStyle(color: Get.theme.primaryColor)),
+                      //   ),
+                      // ).paddingSymmetric(vertical: 30, horizontal: 20),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     TextButton(
+                      //       onPressed: () {
+                      //         controller.resendOTPCode();
+                      //       },
+                      //       child: Text("Resend the OTP Code Again".tr),
+                      //     ),
+                      //   ],
+                      // )
                     ],
                   );
                 }

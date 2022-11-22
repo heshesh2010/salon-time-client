@@ -74,7 +74,7 @@ class ProfileController extends GetxController {
 
   Future<void> verifyPhone() async {
     try {
-      await _userRepository.verifyPhone(smsSent.value);
+      // await _userRepository.verifyPhone(smsSent.value);
       user.value = await _userRepository.update(user.value);
       Get.find<AuthService>().user.value = user.value;
       Get.back();
