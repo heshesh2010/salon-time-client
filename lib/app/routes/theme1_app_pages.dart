@@ -8,6 +8,7 @@
 import 'package:get/get.dart' show GetPage, Transition;
 
 import '../middlewares/auth_middleware.dart';
+import '../modules/checkout/views/tamara_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/forgot_password_view.dart';
 import '../modules/auth/views/login_view.dart';
@@ -263,5 +264,11 @@ class Theme1AppPages {
         page: () => WalletFormView(),
         binding: WalletsBinding(),
         middlewares: [AuthMiddleware()]),
+    GetPage(
+      name: Routes.TAMARA,
+      page: () => const TamaraView(),
+      binding: CheckoutBinding(),
+      middlewares: [AuthMiddleware()],
+    ),
   ];
 }

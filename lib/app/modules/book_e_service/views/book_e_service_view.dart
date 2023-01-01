@@ -635,39 +635,42 @@ class BookEServiceView extends GetWidget<BookEServiceController> {
           children: [
             Expanded(
               child: BlockButtonWidget(
-                text: Stack(
-                  alignment: AlignmentDirectional.centerEnd,
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        "Continue".tr,
-                        textAlign: TextAlign.center,
-                        style: Get.textTheme.headline6.merge(
-                          TextStyle(color: Get.theme.primaryColor),
+                  text: Stack(
+                    alignment: AlignmentDirectional.centerEnd,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          "Continue".tr,
+                          textAlign: TextAlign.center,
+                          style: Get.textTheme.headline6.merge(
+                            TextStyle(color: Get.theme.primaryColor),
+                          ),
                         ),
                       ),
-                    ),
-                    Icon(Icons.arrow_forward_ios,
-                        color: Get.theme.primaryColor, size: 20)
-                  ],
-                ),
-                color: Get.theme.colorScheme.secondary,
-                onPressed: (controller.booking.value.bookingAt != null &&
-                        (controller.booking.value.address != null ||
-                            controller.booking.value.canBookingAtSalon) &&
-                        controller.booking.value.employee != null &&
-                        Get.isRegistered<TabBarController>(tag: 'hours') &&
-                        Get.find<TabBarController>(tag: 'hours').initialized &&
-                        Get.find<TabBarController>(tag: 'hours')
-                                .selectedId
-                                .value !=
-                            "")
-                    ? () async {
-                        await Get.toNamed(Routes.BOOKING_SUMMARY);
-                      }
-                    : null,
-              ),
+                      Icon(Icons.arrow_forward_ios,
+                          color: Get.theme.primaryColor, size: 20)
+                    ],
+                  ),
+                  color: Get.theme.colorScheme.secondary,
+                  onPressed: () {
+                    (controller.booking.value.bookingAt != null &&
+                            (controller.booking.value.address != null ||
+                                controller.booking.value.canBookingAtSalon) &&
+                            controller.booking.value.employee != null &&
+                            Get.isRegistered<TabBarController>(tag: 'hours') &&
+                            Get.find<TabBarController>(tag: 'hours')
+                                .initialized &&
+                            Get.find<TabBarController>(tag: 'hours')
+                                    .selectedId
+                                    .value !=
+                                "")
+                        ? () async {
+                            await Get.toNamed(Routes.BOOKING_SUMMARY);
+                          }
+                        : Get.showSnackbar(Ui.ErrorSnackBar(
+                            message: "Please select an employee".tr));
+                  }),
             ),
             SizedBox(width: 20),
             Wrap(

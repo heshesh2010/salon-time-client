@@ -55,4 +55,5 @@ class Routes {
   static const GALLERY = '/gallery';
   static const WALLETS = '/wallets';
   static const WALLET_FORM = '/wallet_form';
+  static const TAMARA = '/tamara';
 }

@@ -10,6 +10,7 @@ import '../controllers/paystack_controller.dart';
 import '../controllers/razorpay_controller.dart';
 import '../controllers/stripe_controller.dart';
 import '../controllers/stripe_fpx_controller.dart';
+import '../controllers/tamara_controller.dart';
 import '../controllers/wallet_controller.dart';
 
 class CheckoutBinding extends Bindings {
@@ -47,6 +48,9 @@ class CheckoutBinding extends Bindings {
     );
     Get.lazyPut<WalletController>(
       () => WalletController(),
+    );
+    Get.lazyPut<TamaraController>(
+      () => TamaraController(),
     );
   }
 }

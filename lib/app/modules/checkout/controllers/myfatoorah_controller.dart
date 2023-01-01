@@ -44,6 +44,7 @@ class MyFatoorahController extends GetxController {
     if (url.value == _doneUrl) {
       Get.find<BookingsController>().currentStatus.value =
           Get.find<BookingsController>().getStatusByOrder(1).id;
+
       if (Get.isRegistered<TabBarController>(tag: 'bookings')) {
         Get.find<TabBarController>(tag: 'bookings').selectedId.value =
             Get.find<BookingsController>().getStatusByOrder(1).id;

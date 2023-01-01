@@ -107,7 +107,7 @@ class BookingView extends GetWidget<BookingController> {
                                         ),
                                         child: Text(
                                           controller
-                                              .booking.value.status.status,
+                                              .booking.value.status.status.tr,
                                           overflow: TextOverflow.clip,
                                           maxLines: 1,
                                           softWrap: true,
@@ -137,7 +137,7 @@ class BookingView extends GetWidget<BookingController> {
                                         ),
                                         child: Text(
                                           controller.booking.value.payment
-                                                  ?.paymentStatus?.status ??
+                                                  ?.paymentStatus?.status?.tr ??
                                               "Not Paid".tr,
                                           style: TextStyle(
                                               color: Get.theme.hintColor),

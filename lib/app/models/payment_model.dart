@@ -7,16 +7,23 @@ class Payment extends Model {
   String description;
   double amount;
   PaymentMethod paymentMethod;
-  PaymentStatus paymentStatus;
+  PaymentStatus paymentStatus = PaymentStatus();
 
-  Payment({this.id, this.description, this.amount, this.paymentMethod, this.paymentStatus});
+  Payment(
+      {this.id,
+      this.description,
+      this.amount,
+      this.paymentMethod,
+      this.paymentStatus});
 
   Payment.fromJson(Map<String, dynamic> json) {
     super.fromJson(json);
     description = stringFromJson(json, 'description');
     amount = doubleFromJson(json, 'amount');
-    paymentMethod = objectFromJson(json, 'payment_method', (v) => PaymentMethod.fromJson(v));
-    paymentStatus = objectFromJson(json, 'payment_status', (v) => PaymentStatus.fromJson(v));
+    paymentMethod = objectFromJson(
+        json, 'payment_method', (v) => PaymentMethod.fromJson(v));
+    paymentStatus = objectFromJson(
+        json, 'payment_status', (v) => PaymentStatus.fromJson(v));
   }
 
   @override

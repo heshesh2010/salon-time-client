@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:get/get.dart';
@@ -1069,7 +1070,8 @@ class LaravelApiClient extends GetxService with ApiClient {
         .replace(queryParameters: _queryParameters);
     Get.log(_uri.toString());
     var response = await _httpClient.putUri(_uri,
-        data: booking.toJson(), options: _optionsNetwork);
+        data: {"booking_status_id": "5", "payment_id": "5"},
+        options: _optionsNetwork);
     if (response.data['success'] == true) {
       return Booking.fromJson(response.data['data']);
     } else {
@@ -1119,7 +1121,7 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  Future<List<PaymentMethod>> getPaymentMethods() async {
+  Future<List<PaymentMethod>> getPaymentMethods(salonId) async {
     if (!authService.isAuth) {
       throw new Exception(
           "You don't have the permission to access to this area!".tr +
@@ -1131,8 +1133,10 @@ class LaravelApiClient extends GetxService with ApiClient {
       'searchFields': 'enabled:=',
       'orderBy': 'order',
       'sortBy': 'asc',
+      'salon_id': salonId,
       'api_token': authService.apiToken,
     };
+
     Uri _uri = getApiBaseUri("payment_methods")
         .replace(queryParameters: _queryParameters);
     Get.log(_uri.toString());
@@ -1265,6 +1269,27 @@ class LaravelApiClient extends GetxService with ApiClient {
       'api_token': authService.apiToken,
     };
     Uri _uri = getApiBaseUri("payments/cash")
+        .replace(queryParameters: _queryParameters);
+    Get.log(_uri.toString());
+    var response = await _httpClient.postUri(_uri,
+        data: _booking.toJson(), options: _optionsNetwork);
+    if (response.data['success'] == true) {
+      return Payment.fromJson(response.data['data']);
+    } else {
+      throw new Exception(response.data['message']);
+    }
+  }
+
+  Future<Payment> createTamaraPayment(Booking _booking) async {
+    if (!authService.isAuth) {
+      throw new Exception(
+          "You don't have the permission to access to this area!".tr +
+              "[ createPayment() ]");
+    }
+    var _queryParameters = {
+      'api_token': authService.apiToken,
+    };
+    Uri _uri = getApiBaseUri("payments/tamara")
         .replace(queryParameters: _queryParameters);
     Get.log(_uri.toString());
     var response = await _httpClient.postUri(_uri,
@@ -1712,5 +1737,85 @@ class LaravelApiClient extends GetxService with ApiClient {
     } else {
       throw new Exception(response.data['message']);
     }
+  }
+
+  Future<Map> geTamaraUrl(Booking booking) async {
+    if (!authService.isAuth) {
+      throw new Exception(
+          "You don't have the permission to access to this area!".tr +
+              "[ geTamaraUrl() ]");
+    }
+    Uri _uri = Uri.parse("https://api-sandbox.tamara.co/checkout");
+
+    Map _body = {
+      "order_reference_id": booking.id,
+      "total_amount": {"amount": booking.getTotal(), "currency": "SAR"},
+      "description": "booking payment",
+      "country_code": "SA",
+      "payment_type": "PAY_BY_INSTALMENTS",
+      "locale": "en_US",
+      "items": [
+        {
+          "reference_id": booking.id,
+          "type": "Digital",
+          "name": booking.eServices.first.name,
+          "sku": booking.id,
+          "quantity": booking.quantity,
+          "image_url": booking.eServices.first.images.first.url,
+          "total_amount": {
+            "amount": booking.eServices.first.price,
+            "currency": "SAR"
+          }
+        }
+      ],
+      "consumer": {
+        "first_name": booking.user.name,
+        "last_name": booking.user.name,
+        "phone_number": booking.user.phoneNumber,
+        "email": booking.user.email
+      },
+      "billing_address": {
+        "first_name": booking.user.name,
+        "last_name": booking.user.name,
+        "line1": booking.user.address,
+        "city": "Tabuk",
+        "country_code": "SA"
+      },
+      "shipping_address": {
+        "first_name": booking.user.name,
+        "last_name": booking.user.name,
+        "line1": booking.user.address,
+        "city": "Tabuk",
+        "country_code": "SA"
+      },
+      "tax_amount": {"amount": booking.getTaxesValue(), "currency": "SAR"},
+      "shipping_amount": {"amount": "0.00", "currency": "SAR"},
+      "platform": "Flutter",
+      "is_mobile": true,
+      "merchant_url": {
+        "success": "https://salontime.app/checkout/success",
+        "failure": "https://salontime.app/checkout/failure",
+        "cancel": "https://salontime.app/checkout/cancel",
+        "notification": "https://salontime.app/payments/tamarapay"
+      }
+    };
+
+    dio.Response response = await _httpClient.postUri(
+      _uri,
+      data: json.encode(_body),
+      options: Options(
+        headers: {
+          "Authorization":
+              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhY2NvdW50SWQiOiIyNTQ3Zjk0Ny05ZWZiLTRlMGUtOWM4My0zZjQ5NjI1ZjY5Y2UiLCJ0eXBlIjoibWVyY2hhbnQiLCJzYWx0IjoiMmYzODQ1OGRjOWJhNDBlOTJlMjQ3YmFlNDIyODVjY2IiLCJpYXQiOjE2NjgzNDMyNjUsImlzcyI6IlRhbWFyYSJ9.MNfoJynr8hiUceVUd7VeOgEg6TnRZoJ1CpAjhrJUr5td8brfZLlfRYoyX7uzO8aRbCNJnTPB7LMZ1QPVzNQ0gaIgIlhb3PXajS0O5nh_fPgdEwiyyE1ErROlHhgEyv2Ef7VYHWNtLcS_F6ZTOFTOPYYxhdN4eBsM2AYDuqo7ws7KqMxizmH2C44g7-xshzJK2IKyy_Ab4SDo3vTYSDG4Y1ASmZTf66feMSklPGg7IHPxR00k5D5e7LZIpmPkZ9bs4jqjHVe-umVouDHI56arkj-9V4fn29aS-tPamJ2TAg1oQ6Yl9iIvFTC9Bc3vYfnqgGfKIZVKmwsclxsx9vdVpA",
+        },
+      ),
+    );
+
+    // var _queryParameters = {
+    //   'api_token': authService.apiToken,
+    //   'booking_id': booking.id,
+    // };
+
+    return response.data;
   }
 }

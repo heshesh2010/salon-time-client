@@ -2,13 +2,14 @@
 FLUTTER_ROOT=/Users/hesham/flutter
 FLUTTER_APPLICATION_PATH=/Users/hesham/StudioProjects/SalonTime/Client/beauty-salons-spa-massage-barber-booking-business-listing-multivendor-app-with-admin-panel/flutter_application
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=lib/main.dart
+FLUTTER_TARGET=/Users/hesham/StudioProjects/SalonTime/Client/beauty-salons-spa-massage-barber-booking-business-listing-multivendor-app-with-admin-panel/flutter_application/lib/main.dart
 FLUTTER_BUILD_DIR=build
-FLUTTER_BUILD_NAME=2.0.6
-FLUTTER_BUILD_NUMBER=14
+FLUTTER_BUILD_NAME=2.0.9
+FLUTTER_BUILD_NUMBER=15
 EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386 arm64
 EXCLUDED_ARCHS[sdk=iphoneos*]=armv7
+DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==
 DART_OBFUSCATION=false
-TRACK_WIDGET_CREATION=false
-TREE_SHAKE_ICONS=true
+TRACK_WIDGET_CREATION=true
+TREE_SHAKE_ICONS=false
 PACKAGE_CONFIG=/Users/hesham/StudioProjects/SalonTime/Client/beauty-salons-spa-massage-barber-booking-business-listing-multivendor-app-with-admin-panel/flutter_application/.dart_tool/package_config.json

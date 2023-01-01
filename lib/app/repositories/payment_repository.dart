@@ -14,8 +14,8 @@ class PaymentRepository {
     _laravelApiClient = Get.find<LaravelApiClient>();
   }
 
-  Future<List<PaymentMethod>> getMethods() {
-    return _laravelApiClient.getPaymentMethods();
+  Future<List<PaymentMethod>> getMethods(salonId) {
+    return _laravelApiClient.getPaymentMethods(salonId);
   }
 
   Future<List<Wallet>> getWallets() {
@@ -40,6 +40,10 @@ class PaymentRepository {
 
   Future<Payment> create(Booking booking) {
     return _laravelApiClient.createPayment(booking);
+  }
+
+  Future<Payment> createTamara(Booking booking) {
+    return _laravelApiClient.createTamaraPayment(booking);
   }
 
   Future<Payment> createWalletPayment(Booking booking, Wallet wallet) {
@@ -76,5 +80,9 @@ class PaymentRepository {
 
   String getStripeFPXUrl(Booking booking) {
     return _laravelApiClient.getStripeFPXUrl(booking);
+  }
+
+  Future<Map> geTamaraUrl(Booking booking) async {
+    return await _laravelApiClient.geTamaraUrl(booking);
   }
 }

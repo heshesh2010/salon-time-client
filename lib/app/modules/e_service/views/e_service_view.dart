@@ -100,17 +100,14 @@ class EServiceView extends GetWidget<EServiceController> {
                     ],
                     bottom: buildEServiceTitleBarWidget(_eService),
                     flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.parallax,
-                      background: Obx(() {
-                        return Stack(
+                        collapseMode: CollapseMode.parallax,
+                        background: Stack(
                           alignment: AlignmentDirectional.bottomCenter,
                           children: <Widget>[
                             buildCarouselSlider(_eService),
                             buildCarouselBullets(_eService),
                           ],
-                        );
-                      }),
-                    ).marginOnly(bottom: 50),
+                        )).marginOnly(bottom: 50),
                   ),
 
                   // WelcomeWidget(),

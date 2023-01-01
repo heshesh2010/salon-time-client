@@ -37,7 +37,11 @@ class BookingController extends GetxController {
 
   @override
   void onInit() async {
-    booking.value = Get.arguments as Booking;
+    if (Get.arguments is Booking)
+      booking.value = Get.arguments as Booking;
+    else {
+      booking.value = Get.arguments["booking"] as Booking;
+    }
     super.onInit();
   }
 
@@ -133,6 +137,22 @@ class BookingController extends GetxController {
       booking.update((val) {
         val.status = bookingStatus;
       });
+    } catch (e) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    }
+  }
+
+  Future<void> changeBookingPaymentStatus(int paymentStatus) async {
+    try {
+      // Payment payment = new Payment(
+      //     paymentMethod: booking.value.payment.paymentMethod,
+      //     paymentStatus: PaymentStatus(id: "10"));
+      // Booking _booking = booking.value..payment = payment;
+      await _bookingRepository.update(
+          Booking(id: booking.value.id, payment: booking.value.payment));
+      // booking.update((val) {
+      //   val.payment.paymentStatus = PaymentStatus(id: "10", );
+      // });
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }

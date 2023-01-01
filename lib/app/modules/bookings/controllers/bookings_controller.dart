@@ -109,4 +109,7 @@ class BookingsController extends GetxController {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
   }
+
+// update booking payment
+
 }

@@ -35,16 +35,25 @@ class CheckoutController extends GetxController {
 
   @override
   void onInit() async {
-    booking.value = Get.arguments as Booking;
+    if (Get.arguments is Booking)
+      booking.value = Get.arguments as Booking;
+    else {
+      booking.value = Get.arguments["booking"] as Booking;
+    }
     await loadPaymentMethodsList();
     await loadWalletList();
-    selectedPaymentMethod.value = this.paymentsList.firstWhere((element) => element.isDefault);
+    selectedPaymentMethod.value =
+        this.paymentsList.firstWhere((element) => element.isDefault);
     super.onInit();
   }
 
   Future loadPaymentMethodsList() async {
     try {
-      paymentsList.assignAll(await _paymentRepository.getMethods());
+      paymentsList.assignAll(
+          await _paymentRepository.getMethods(booking.value.salon.id));
+      if (booking.value.getTotal() < 100) {
+        paymentsList.removeWhere((element) => element.route == "/Tamara");
+      }
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
@@ -52,7 +61,8 @@ class CheckoutController extends GetxController {
 
   Future loadWalletList() async {
     try {
-      var _walletIndex = paymentsList.indexWhere((element) => element.route.toLowerCase() == Routes.WALLET);
+      var _walletIndex = paymentsList.indexWhere(
+          (element) => element.route.toLowerCase() == Routes.WALLET);
       if (_walletIndex > -1) {
         // wallet payment method enabled
         // remove existing wallet method
@@ -75,23 +85,33 @@ class CheckoutController extends GetxController {
 
   Future<void> createBooking(Booking _booking) async {
     try {
-      _booking.payment = null;
+      //   _booking.payment = null;
       booking.value = await _bookingRepository.add(_booking);
-      Get.find<BookingsController>().currentStatus.value = Get.find<BookingsController>().getStatusByOrder(1).id;
+      Get.find<BookingsController>().currentStatus.value =
+          Get.find<BookingsController>().getStatusByOrder(1).id;
       if (Get.isRegistered<TabBarController>(tag: 'bookings')) {
-        Get.find<TabBarController>(tag: 'bookings').selectedId.value = Get.find<BookingsController>().getStatusByOrder(1).id;
+        Get.find<TabBarController>(tag: 'bookings').selectedId.value =
+            Get.find<BookingsController>().getStatusByOrder(1).id;
       }
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
   }
 
-  Future<void> payBooking(Booking _booking) async {
+  Future<void> payBooking() async {
     try {
-      _booking.payment = new Payment(paymentMethod: selectedPaymentMethod.value);
+      // _booking.payment =
+      //     new Payment(paymentMethod: selectedPaymentMethod.value);
+
+      booking.value.payment =
+          new Payment(paymentMethod: selectedPaymentMethod.value);
+
       if (selectedPaymentMethod.value.route != null) {
         Get.toNamed(selectedPaymentMethod.value.route.toLowerCase(),
-            arguments: {'booking': Booking(id: booking.value.id, payment: _booking.payment), 'wallet': selectedPaymentMethod.value.wallet});
+            arguments: {
+              'booking': booking.value,
+              'wallet': selectedPaymentMethod.value.wallet
+            });
       }
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
@@ -100,16 +120,20 @@ class CheckoutController extends GetxController {
 
   TextStyle getTitleTheme(PaymentMethod paymentMethod) {
     if (paymentMethod == selectedPaymentMethod.value) {
-      return Get.textTheme.bodyText2.merge(TextStyle(color: Get.theme.primaryColor));
-    } else if (paymentMethod.wallet != null && paymentMethod.wallet.balance < booking.value.getTotal()) {
-      return Get.textTheme.bodyText2.merge(TextStyle(color: Get.theme.focusColor));
+      return Get.textTheme.bodyText2
+          .merge(TextStyle(color: Get.theme.primaryColor));
+    } else if (paymentMethod.wallet != null &&
+        paymentMethod.wallet.balance < booking.value.getTotal()) {
+      return Get.textTheme.bodyText2
+          .merge(TextStyle(color: Get.theme.focusColor));
     }
     return Get.textTheme.bodyText2;
   }
 
   TextStyle getSubTitleTheme(PaymentMethod paymentMethod) {
     if (paymentMethod == selectedPaymentMethod.value) {
-      return Get.textTheme.caption.merge(TextStyle(color: Get.theme.primaryColor));
+      return Get.textTheme.caption
+          .merge(TextStyle(color: Get.theme.primaryColor));
     }
     return Get.textTheme.caption;
   }
@@ -121,7 +145,8 @@ class CheckoutController extends GetxController {
     return null;
   }
 
-  void _insertWalletsPaymentMethod(int _walletIndex, PaymentMethod _walletPaymentMethod) {
+  void _insertWalletsPaymentMethod(
+      int _walletIndex, PaymentMethod _walletPaymentMethod) {
     walletList.forEach((_walletElement) {
       paymentsList.insert(
           _walletIndex,

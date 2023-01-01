@@ -12,6 +12,7 @@ import 'e_service_model.dart';
 import 'option_model.dart';
 import 'parents/model.dart';
 import 'payment_model.dart';
+import 'payment_status_model.dart';
 import 'salon_model.dart';
 import 'tax_model.dart';
 import 'user_model.dart';
@@ -35,8 +36,8 @@ class Booking extends Model {
   DateTime bookingAt;
   DateTime startAt;
   DateTime endsAt;
-  Payment payment;
-
+  Payment payment = Payment(paymentStatus: PaymentStatus());
+  String taxes_value;
   Booking(
       {this.id,
       this.hint,
@@ -56,7 +57,8 @@ class Booking extends Model {
       this.bookingAt,
       this.startAt,
       this.endsAt,
-      this.payment});
+      this.payment,
+      this.taxes_value});
 
   Booking.fromJson(Map<String, dynamic> json) {
     super.fromJson(json);
@@ -65,7 +67,8 @@ class Booking extends Model {
     atSalon = boolFromJson(json, 'at_salon');
     duration = doubleFromJson(json, 'duration');
     quantity = intFromJson(json, 'quantity');
-    status = objectFromJson(json, 'booking_status', (v) => BookingStatus.fromJson(v));
+    status = objectFromJson(
+        json, 'booking_status', (v) => BookingStatus.fromJson(v));
     user = objectFromJson(json, 'user', (v) => User.fromJson(v));
     employee = objectFromJson(json, 'employee', (v) => User.fromJson(v));
     eServices = listFromJson(json, 'e_services', (v) => EService.fromJson(v));
@@ -78,6 +81,7 @@ class Booking extends Model {
     bookingAt = dateFromJson(json, 'booking_at', defaultValue: null);
     startAt = dateFromJson(json, 'start_at', defaultValue: null);
     endsAt = dateFromJson(json, 'ends_at', defaultValue: null);
+    taxes_value = stringFromJson(json, 'taxes_value');
   }
 
   Map<String, dynamic> toJson() {
@@ -136,15 +140,22 @@ class Booking extends Model {
     if (this.endsAt != null) {
       data['ends_at'] = endsAt.toUtc().toString();
     }
+
+    data["payment_status_id"] = "10";
+
     return data;
   }
 
   bool get canBookingAtSalon {
-    return this.eServices.fold<bool>(true, (previousValue, element) => previousValue && element.enableAtSalon);
+    return this.eServices.fold<bool>(true,
+        (previousValue, element) => previousValue && element.enableAtSalon);
   }
 
   bool get canBookingAtCustomerAddress {
-    return this.eServices.fold<bool>(true, (previousValue, element) => previousValue && element.enableAtCustomerAddress);
+    return this.eServices.fold<bool>(
+        true,
+        (previousValue, element) =>
+            previousValue && element.enableAtCustomerAddress);
   }
 
   double getTotal() {

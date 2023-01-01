@@ -133,7 +133,7 @@ class CheckoutView extends GetWidget<CheckoutController> {
                         ? null
                         : () async {
                             await controller.createBooking(_booking);
-                            await controller.payBooking(_booking);
+                            await controller.payBooking();
                           });
           }).paddingSymmetric(vertical: 10, horizontal: 20),
         ],
